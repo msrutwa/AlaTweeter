@@ -5,16 +5,18 @@ import dao.UserDao;
 import model.AppUser;
 
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.util.HashSet;
 import java.util.List;
 
 public class AppUserDao extends AbstractDao implements UserDao {
 
 
     @Override
-    public List<AppUser> getAll() {
+    public HashSet<AppUser> getAll() {
         TypedQuery<AppUser> selectAllQuery = entityManager.createQuery("select u from AppUser u", AppUser.class);
-        return selectAllQuery.getResultList();
+        return new HashSet<AppUser>(selectAllQuery.getResultList());
     }
 
     @Override
@@ -42,10 +44,10 @@ public class AppUserDao extends AbstractDao implements UserDao {
     }
 
     @Override
-    public List<AppUser> getUsersByName(String name) {
+    public HashSet<AppUser> getUsersByName(String name) {
         TypedQuery<AppUser> selectByNameQuery = entityManager.createQuery("select u from AppUser u where u.name = :name", AppUser.class);
-        selectByNameQuery.setParameter("name", name).getResultList();
-        return null;
+        return new HashSet<AppUser>(selectByNameQuery.setParameter("name", name).getResultList());
+
     }
 
     @Override
@@ -63,23 +65,50 @@ public class AppUserDao extends AbstractDao implements UserDao {
 
 
     @Override
-    public List<AppUser> getFollowedUsers(String login) {
+    public HashSet<AppUser> getFollowedUsers(String login) {
+        AppUser userByLogin = getUserByLogin(login);
+        return new HashSet<AppUser>(userByLogin.getFollowedByUser());
 
-        return null;
     }
 
     @Override
-    public List<AppUser> getFollowers(String login) {
-        return null;
+    public HashSet<AppUser> getNotFollowedUsers(String login) {
+        Query query = entityManager.createQuery("select u from AppUser u where u.login != :login");
+        query.setParameter("login", login);
+        List<AppUser> users = query.getResultList();
+        users.removeAll(getFollowedUsers(login));
+        return new HashSet<>(users);
     }
+
+    @Override
+    public HashSet<AppUser> getFollowers(String login) {
+        AppUser userByLogin = getUserByLogin(login);
+        Query query = entityManager
+                .createQuery("select followers from AppUser u where u.id =:userId");
+        Long id = userByLogin.getId();
+        return new HashSet<AppUser>(query.setParameter("userId", id).getResultList());
+
+    }
+
 
     @Override
     public void follow(String currentUserLogin, String userLoginToFollow) {
+        if (!currentUserLogin.equals(userLoginToFollow)) {
+            AppUser currentUser = getUserByLogin(currentUserLogin);
+            AppUser userToFollow = getUserByLogin(userLoginToFollow);
+            currentUser.getFollowedByUser().add(userToFollow);
+            saveUser(currentUser);
 
+        }
     }
 
     @Override
     public void stopFollowing(String currentUserLogin, String userLoginToStopFollow) {
+        AppUser currentUser = getUserByLogin(currentUserLogin);
+        AppUser userToStopFollow = getUserByLogin(userLoginToStopFollow);
+        currentUser.getFollowedByUser().remove(userToStopFollow);
+        saveUser(currentUser);
+
 
     }
 }
