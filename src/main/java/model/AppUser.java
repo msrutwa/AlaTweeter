@@ -137,6 +137,65 @@ public class AppUser {
 
                 '}';
     }
+
+    //Builder - wzorzec projektowy - przećwiczyć go!!!
+    // (klasa statyczna wewnętrzna, uzywany buildera do budowania pól)
+    public static class UserBuilder {
+        private String name;
+        private String lastName;
+        private String login;
+        private String password;
+        private String email;
+        private Date dateOfRegistration;
+
+        public static UserBuilder getBuilder() {
+            return new UserBuilder();
+        }
+
+        public UserBuilder login(String login) {
+            this.login = login;
+            return this;
+        }
+
+        public UserBuilder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public UserBuilder lastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public UserBuilder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public UserBuilder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public UserBuilder dateOfRegistration(Date dateOfRegistration) {
+            this.dateOfRegistration = dateOfRegistration;
+            return this;
+        }
+
+        public AppUser build() {
+            AppUser user = new AppUser();
+            user.setLogin(this.login);
+            user.setEmail(this.email);
+            user.setDateOfRegistration(this.dateOfRegistration);
+            user.setLastName(this.lastName);
+            user.setName(this.name);
+            user.setPassword(this.password);
+            return user;
+        }
+
+
+    }
+
 }
 
 

@@ -1,11 +1,9 @@
-import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import dao.UserDao;
 import dao.dao.impl.AppUserDao;
 import model.AppUser;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Test {
@@ -16,6 +14,8 @@ public class Test {
         UserDao userDao = new AppUserDao();
         AppUser user1 = new AppUser();
         AppUser user2 = new AppUser();
+        AppUser user3 = new AppUser();
+        AppUser user4 = new AppUser();
 
         user1.setName("Jan");
         user1.setLastName("Kowalski");
@@ -33,6 +33,24 @@ public class Test {
         user2.setPassword("1234");
         user2.setDateOfRegistration(new Date());
         userDao.saveUser(user2);
+
+
+        user3.setName("A");
+        user3.setLastName("B");
+        user3.setLogin("ab");
+        user3.setEmail("ab@mail.com");
+        user3.setPassword("1");
+        user3.setDateOfRegistration(new Date());
+        userDao.saveUser(user3);
+
+        user4.setName("A");
+        user4.setLastName("C");
+        user4.setLogin("ac");
+        user4.setEmail("ab@mail.com");
+        user4.setPassword("1");
+        user4.setDateOfRegistration(new Date());
+        userDao.saveUser(user4);
+
 
         userDao.follow("jan78", "adam80");
         AppUser adam80 = userDao.getUserByLogin("adam80");
