@@ -14,8 +14,7 @@ public class Test {
         UserDao userDao = new AppUserDao();
         AppUser user1 = new AppUser();
         AppUser user2 = new AppUser();
-        AppUser user3 = new AppUser();
-        AppUser user4 = new AppUser();
+
 
         user1.setName("Jan");
         user1.setLastName("Kowalski");
@@ -35,23 +34,6 @@ public class Test {
         userDao.saveUser(user2);
 
 
-        user3.setName("A");
-        user3.setLastName("B");
-        user3.setLogin("ab");
-        user3.setEmail("ab@mail.com");
-        user3.setPassword("1");
-        user3.setDateOfRegistration(new Date());
-        userDao.saveUser(user3);
-
-        user4.setName("A");
-        user4.setLastName("C");
-        user4.setLogin("ac");
-        user4.setEmail("ab@mail.com");
-        user4.setPassword("1");
-        user4.setDateOfRegistration(new Date());
-        userDao.saveUser(user4);
-
-
         userDao.follow("jan78", "adam80");
         AppUser adam80 = userDao.getUserByLogin("adam80");
         Set<AppUser> followers = adam80.getFollowers();
@@ -61,8 +43,19 @@ public class Test {
 
         System.out.println(followers1.size());
         userDao.saveUser(adam801);
+        returnTest();
 
 
 
     }
+
+    public static void returnTest(){
+        if(true){
+            System.out.println("IN if");
+            return;
+        }
+        System.out.println("outside");
+    }
+
+
 }
