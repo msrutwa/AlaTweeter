@@ -82,6 +82,9 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
+        req.getSession().setAttribute(LOGIN, login);
+
+
         if (isRememberChecked) {
             Cookie loginCookie = new Cookie(LOGIN, login);
             loginCookie.setMaxAge(60 * 60);

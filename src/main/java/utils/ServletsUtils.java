@@ -1,5 +1,7 @@
 package utils;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class ServletsUtils {
 
     public static final String LOGIN = "login";
@@ -15,7 +17,13 @@ public class ServletsUtils {
     public static final String ERROR_LOGIN_REG_MESSAGE = "Typed login is already used";
     public static final String ERROR_EMAIL_REG_MESSAGE = "Typed email is already used";
     public static final String ERROR_LOGIN_MESSAGE = "Login or password is invalid";
+    public static final String NOT_FOLLOWED_USERS = "notFollowedUsers";
+    public static final String FOLLOWED_USERS = "followedUsers";
 
+    public static String getUserLoginFromSession(HttpServletRequest req){
+        String login = (String)req.getSession().getAttribute(LOGIN);
+        return login;
+    }
 
 
 
