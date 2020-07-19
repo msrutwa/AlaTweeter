@@ -34,8 +34,8 @@ public class UserManagementServiceImpl implements UserManagementService {
     }
 
     @Override
-    public void stopFollowing(String currentUserLogin, String userLoginToUnFollowe) {
-        dao.stopFollowing(currentUserLogin, currentUserLogin);
+    public void stopFollowing(String currentUserLogin, String userLoginToUnfollow) {
+        dao.stopFollowing(currentUserLogin, userLoginToUnfollow);
     }
 
     @Override
